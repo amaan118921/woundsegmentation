@@ -61,10 +61,10 @@ def predict_result(image_url, filename):
         input_image = np.array(input_image) / 255.0  # Normalize the image (assuming pixel values are in [0, 255])
 
         # Predict using the model
-        # prediction = model.predict(np.expand_dims(input_image, axis=0))
-        # test_label_filenames_list = [filename]
+        prediction = model.predict(np.expand_dims(input_image, axis=0))
+        test_label_filenames_list = [filename]
 
-        # # Save the prediction result
+        # Save the prediction result
         # save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
         try:
             upload_img(outputPath + filename, 'images/' + filename)
