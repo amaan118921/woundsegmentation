@@ -93,6 +93,6 @@ def predict():
     # url = request.args.get('url')
     # filename = request.args.get('filename')
     url = 'https://firebasestorage.googleapis.com/v0/b/womensafety-c4d41.appspot.com/o/uploads%2Ffoot-ulcer-0027.png?alt=media&token=51790edf-d836-4c44-9c3d-e4c7eb72e5ad'
-    name = "foot-ulcer-0027.png"
+    name = "test.png"
     res = predict_result(url, name)
     return res
