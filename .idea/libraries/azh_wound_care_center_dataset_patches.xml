@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="azh_wound_care_center_dataset_patches">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/data/wound_dataset/azh_wound_care_center_dataset_patches.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
