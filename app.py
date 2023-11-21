@@ -66,9 +66,9 @@ def predict_result(image_url, filename):
         input_image = np.array(input_image) / 255.0  # Normalize the image (assuming pixel values are in [0, 255])
 
         try:
-            prediction = model.predict(np.expand_dims(input_image, axis=0))
-            test_label_filenames_list = [filename]
-            save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
+            # prediction = model.predict(np.expand_dims(input_image, axis=0))
+            # test_label_filenames_list = [filename]
+            # save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
             res = upload_img(outputPath + filename, 'images/' + filename)
             return res
         except Exception as e:
@@ -87,9 +87,9 @@ def hello_world():
 
 @app.route('/predict')
 def predict():
-    # url = request.args.get('url')
+    url = request.args.get('url')
     # filename = request.args.get('filename')
-    url = 'https://firebasestorage.googleapis.com/v0/b/womensafety-c4d41.appspot.com/o/uploads%2Ffoot-ulcer-0027.png?alt=media&token=51790edf-d836-4c44-9c3d-e4c7eb72e5ad'
+    # url = 'https://firebasestorage.googleapis.com/v0/b/womensafety-c4d41.appspot.com/o/uploads%2Ffoot-ulcer-0027.png?alt=media&token=51790edf-d836-4c44-9c3d-e4c7eb72e5ad'
     filename = "test.png"
     res = predict_result(url, filename)
     return res
