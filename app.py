@@ -1,4 +1,7 @@
+
+
 from flask import Flask, request
+from flask import jsonify
 
 from io import BytesIO
 from firebase_admin import credentials, initialize_app, storage
@@ -49,7 +52,9 @@ def upload_img(filename, file):
 
     blob.make_public()
 
-    print("your file url", blob.public_url)
+    img_url = blob.public_url
+
+    return jsonify({'imgUrl': img_url})
 
 
 def predict_result(image_url, filename):
@@ -61,21 +66,21 @@ def predict_result(image_url, filename):
         input_image = np.array(input_image) / 255.0  # Normalize the image (assuming pixel values are in [0, 255])
 
         # Predict using the model
-        prediction = model.predict(np.expand_dims(input_image, axis=0))
-        test_label_filenames_list = [filename]
+        # prediction = model.predict(np.expand_dims(input_image, axis=0))
+        # test_label_filenames_list = [filename]
 
         # Save the prediction result
         # save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
         try:
-            upload_img(outputPath + filename, 'images/' + filename)
-            return True
+            res = upload_img(outputPath + filename, 'images/' + filename)
+            return res
         except Exception as e:
             print("Error:", str(e))
-            return False
+            return jsonify({'imgUrl': None})
 
     else:
         print("Failed to download the image from the URL: {image_url}")
-        return False
+        return jsonify({'imgUrl': None})
 
 
 @app.route('/')
@@ -88,6 +93,6 @@ def predict():
     # url = request.args.get('url')
     # filename = request.args.get('filename')
     url = 'https://firebasestorage.googleapis.com/v0/b/womensafety-c4d41.appspot.com/o/uploads%2Ffoot-ulcer-0027.png?alt=media&token=51790edf-d836-4c44-9c3d-e4c7eb72e5ad'
-    name = "foot-ulcer-0027.png"
-    if predict_result(url, name): return 'success'
-    return 'failed'
+    name = "any.jpg"
+    res = predict_result(url, name)
+    return res
