@@ -54,7 +54,7 @@ def upload_img(filename, file):
 
     img_url = blob.public_url
 
-    return jsonify({'imgUrl': img_url})
+    return jsonify({'resultUrl': img_url})
 
 
 def predict_result(image_url, filename):
@@ -76,11 +76,11 @@ def predict_result(image_url, filename):
             return res
         except Exception as e:
             print("Error:", str(e))
-            return jsonify({'imgUrl': None})
+            return jsonify({'resultUrl': None})
 
     else:
         print("Failed to download the image from the URL: {image_url}")
-        return jsonify({'imgUrl': None})
+        return jsonify({'resultUrl': None})
 
 
 @app.route('/')
