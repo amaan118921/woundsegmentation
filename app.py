@@ -53,19 +53,19 @@ def upload_img(filename, file):
 
 
 def predict_result(image_url, filename):
-    # response = requests.get(image_url)
-    # if response.status_code == 200:
-    #     image_data = response.content
-    #     input_image = Image.open(BytesIO(image_data))
-    #     input_image = input_image.resize((input_dim_x, input_dim_y))
-    #     input_image = np.array(input_image) / 255.0  # Normalize the image (assuming pixel values are in [0, 255])
-    #
-    #     # Predict using the model
-    #     prediction = model.predict(np.expand_dims(input_image, axis=0))
-    #     test_label_filenames_list = [filename]
-    #
-    #     # Save the prediction result
-    #     save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
+    response = requests.get(image_url)
+    if response.status_code == 200:
+        image_data = response.content
+        input_image = Image.open(BytesIO(image_data))
+        input_image = input_image.resize((input_dim_x, input_dim_y))
+        input_image = np.array(input_image) / 255.0  # Normalize the image (assuming pixel values are in [0, 255])
+
+        # Predict using the model
+        prediction = model.predict(np.expand_dims(input_image, axis=0))
+        test_label_filenames_list = [filename]
+
+        # Save the prediction result
+        save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
         try:
             upload_img(outputPath + filename, 'images/' + filename)
             return True
@@ -73,8 +73,9 @@ def predict_result(image_url, filename):
             print("Error:", str(e))
             return False
 
-    # else:
-    #     print("Failed to download the image from the URL: {image_url}")
+    else:
+        print("Failed to download the image from the URL: {image_url}")
+        return False
 
 
 @app.route('/')
@@ -87,6 +88,6 @@ def predict():
     # url = request.args.get('url')
     # filename = request.args.get('filename')
     url = 'https://firebasestorage.googleapis.com/v0/b/womensafety-c4d41.appspot.com/o/uploads%2Ffoot-ulcer-0027.png?alt=media&token=51790edf-d836-4c44-9c3d-e4c7eb72e5ad'
-    name = "foot-ulcer-0027.png"
+    name = "test.png"
     if predict_result(url, name): return 'success'
     return 'failed'
