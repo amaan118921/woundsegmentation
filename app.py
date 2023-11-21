@@ -61,11 +61,11 @@ def predict_result(image_url, filename):
         input_image = np.array(input_image) / 255.0  # Normalize the image (assuming pixel values are in [0, 255])
 
         # Predict using the model
-        prediction = model.predict(np.expand_dims(input_image, axis=0))
-        test_label_filenames_list = [filename]
+        # prediction = model.predict(np.expand_dims(input_image, axis=0))
+        # test_label_filenames_list = [filename]
 
-        # Save the prediction result
-        save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
+        # # Save the prediction result
+        # save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
         try:
             upload_img(outputPath + filename, 'images/' + filename)
             return True
@@ -88,6 +88,6 @@ def predict():
     # url = request.args.get('url')
     # filename = request.args.get('filename')
     url = 'https://firebasestorage.googleapis.com/v0/b/womensafety-c4d41.appspot.com/o/uploads%2Ffoot-ulcer-0027.png?alt=media&token=51790edf-d836-4c44-9c3d-e4c7eb72e5ad'
-    name = "test.png"
+    name = "foot-ulcer-0027.png"
     if predict_result(url, name): return 'success'
     return 'failed'
