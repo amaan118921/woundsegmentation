@@ -81,12 +81,13 @@ def hello_world():
     return 'hello, world!'
 
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET'])
 def predict():
-    # url = request.args.get('url')
-    data = request.get_json()
-    url = data['url']
-    filename = data['filename']
+    url = request.args.get('url')
+    filename = request.args.get('filename')
+    # data = request.get_json()
+    # url = data['url']
+    # filename = data['filename']
     # url = 'https://firebasestorage.googleapis.com/v0/b/womensafety-c4d41.appspot.com/o/uploads%2Ffoot-ulcer-0027.png?alt=media&token=51790edf-d836-4c44-9c3d-e4c7eb72e5ad'
     # filename = "test.png"
     res = predict_and_save(url, filename)
