@@ -23,14 +23,6 @@ outputPath = './data/output/'
 weight_file_name = 'test.hdf5'
 pred_save_path = 'test/'
 
-model = load_model('./training_history/' + weight_file_name
-                   , custom_objects={'recall': recall,
-                                     'precision': precision,
-                                     'dice_coef': dice_coef,
-                                     'relu6': relu6,
-                                     'DepthwiseConv2D': DepthwiseConv2D,
-                                     'BilinearUpsampling': BilinearUpsampling})
-
 initialized = False
 
 
@@ -62,13 +54,19 @@ def predict_and_save(image_url, filename):
         input_image = Image.open(BytesIO(image_data))
         input_image = input_image.resize((input_dim_x, input_dim_y))
         input_image = np.array(input_image) / 255.0  # Normalize the image (assuming pixel values are in [0, 255])
-
+        model = load_model('./training_history/' + weight_file_name
+                           , custom_objects={'recall': recall,
+                                             'precision': precision,
+                                             'dice_coef': dice_coef,
+                                             'relu6': relu6,
+                                             'DepthwiseConv2D': DepthwiseConv2D,
+                                             'BilinearUpsampling': BilinearUpsampling})
         try:
             prediction = model.predict(np.expand_dims(input_image, axis=0))
             test_label_filenames_list = [filename]
-            # save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
-            # res = upload_img(outputPath + filename, 'images/' + filename)
-            return jsonify({'resultUrl': "success"})
+            save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
+            res = upload_img(outputPath + filename, 'images/' + filename)
+            return res
         except Exception as e:
             print("Error:", str(e))
             return jsonify({'resultUrl': None, 'error': str(e)})
@@ -93,3 +91,7 @@ def predict():
     # filename = "test.png"
     res = predict_and_save(url, filename)
     return res
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
