@@ -85,6 +85,7 @@ def hello_world():
 def predict():
     url = request.args.get('url')
     filename = request.args.get('filename')
+    filename = filename + '.png'
     # data = request.get_json()
     # url = data['url']
     # filename = data['filename']
