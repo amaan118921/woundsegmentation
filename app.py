@@ -55,7 +55,7 @@ def upload_img(filename, file):
     return jsonify({'resultUrl': img_url})
 
 
-def predict_result(image_url, filename):
+def predict_and_save(image_url, filename):
     response = requests.get(image_url)
     if response.status_code == 200:
         image_data = response.content
@@ -66,9 +66,9 @@ def predict_result(image_url, filename):
         try:
             prediction = model.predict(np.expand_dims(input_image, axis=0))
             test_label_filenames_list = [filename]
-            save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
-            res = upload_img(outputPath + filename, 'images/' + filename)
-            return res
+            # save_results(prediction, 'rgb', outputPath, test_label_filenames_list)
+            # res = upload_img(outputPath + filename, 'images/' + filename)
+            return jsonify({'resultUrl': "success"})
         except Exception as e:
             print("Error:", str(e))
             return jsonify({'resultUrl': None, 'error': str(e)})
@@ -91,5 +91,5 @@ def predict():
     filename = data['filename']
     # url = 'https://firebasestorage.googleapis.com/v0/b/womensafety-c4d41.appspot.com/o/uploads%2Ffoot-ulcer-0027.png?alt=media&token=51790edf-d836-4c44-9c3d-e4c7eb72e5ad'
     # filename = "test.png"
-    res = predict_result(url, filename)
+    res = predict_and_save(url, filename)
     return res
