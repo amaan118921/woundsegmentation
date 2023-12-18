@@ -25,7 +25,7 @@ pred_save_path = 'test/'
 
 initialized = False
 
-
+# This method does the initializations related to the firebase storage
 def init():
     global initialized
     if not initialized:
@@ -33,7 +33,8 @@ def init():
         initialize_app(cred, {'storageBucket': 'womensafety-c4d41.appspot.com'})
         initialized = True
 
-
+# The upload Image method uploads the resultant image to the cloud and returns the url of the image as the final
+# response of the GET Request
 def upload_img(filename, file):
     init()
     bucket = storage.bucket()
@@ -46,7 +47,8 @@ def upload_img(filename, file):
 
     return jsonify({'resultUrl': img_url})
 
-
+# This method first downloads the image from the given url and then feeds it into the cnn model.
+# Then the model detects the contour and uploads the resultant image using the upload_img method.
 def predict_and_save(image_url, filename):
     response = requests.get(image_url)
     if response.status_code == 200:
@@ -76,11 +78,13 @@ def predict_and_save(image_url, filename):
         return jsonify({'resultUrl': None})
 
 
+# endpoint for testing
 @app.route('/')
 def hello_world():
     return 'hello, world!'
 
 
+# endpoint to detect the contour of the image, by extracting the url of the image and filename from the request.
 @app.route('/predict', methods=['GET'])
 def predict():
     url = request.args.get('url')
